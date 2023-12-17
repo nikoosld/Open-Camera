@@ -24,10 +24,21 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
         }
         button.setOnClickListener {
-            try {
-                cameraManager!!.setTorchMode(getCameraID!!,true)
-            }catch (e:Exception){
-                e.printStackTrace()
+            if(!torchStatus){
+                try {
+                    cameraManager!!.setTorchMode(getCameraID!!,true)
+                    torchStatus = true
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+
+            }else{
+                try {
+                    cameraManager!!.setTorchMode(getCameraID!!,false)
+                    torchStatus = false
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
             }
         }
     }
