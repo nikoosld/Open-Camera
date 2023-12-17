@@ -1,6 +1,7 @@
 package com.example.open_camera
 
 import android.content.Context
+import android.content.Intent
 import android.hardware.camera2.CameraManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -40,6 +41,8 @@ class MainActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
             }
+            val intent = Intent(this, MainActivity2::class.java)
+            startActivity(intent)
         }
     }
 }
