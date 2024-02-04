@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity() {
         try {
             getCameraID = cameraManager!!.cameraIdList[0]
 
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (exc: Exception) {
+            exc.printStackTrace()
         }
 
         buttonOn.setOnClickListener {
