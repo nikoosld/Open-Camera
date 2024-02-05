@@ -18,6 +18,7 @@ import java.util.concurrent.Executors
 
 class MainActivity2 : AppCompatActivity() {
     lateinit var buttonOn: Button
+    private var flashFlag: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
@@ -34,7 +35,7 @@ class MainActivity2 : AppCompatActivity() {
 
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-        cameraProviderFuture.addListener(Runnable{
+        cameraProviderFuture.addListener(Runnable {
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
             val preview = Preview.Builder().build()
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -42,30 +43,34 @@ class MainActivity2 : AppCompatActivity() {
                 // Unbinds use cases before rebinding
                 cameraProvider.unbindAll()
                 // Binds use cases to the lifecycle of the activity
-                val camera = cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, preview)
+                cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, preview)
                 //Handles flash light button functionality
-                var flashFlag : Boolean = false
                 buttonOn.setOnClickListener {
-                    flashFlag = toggle(camera, flashFlag)
+                    val camera = cameraProvider.bindToLifecycle(
+                        this as LifecycleOwner,
+                        cameraSelector,
+                        preview
+                    )
+                    toggle(camera)
                 }
                 // R.id.viewFinder is the ID of the PreviewView
                 val previewView: PreviewView = findViewById(R.id.previewView)
                 val executor = Executors.newSingleThreadExecutor()
 
                 preview.setSurfaceProvider(executor, previewView.surfaceProvider)
-            } catch(exc: Exception) {
+            } catch (exc: Exception) {
                 // Handle any errors
                 exc.printStackTrace()
             }
         }, ContextCompat.getMainExecutor(this))
     }
+
     //Toggles the flash light
-    private fun toggle (camera: Camera, flashFlag: Boolean): Boolean{
-        val newFlag = !flashFlag
+    private fun toggle(camera: Camera) {
+        flashFlag = !flashFlag
         if (camera.cameraInfo.hasFlashUnit()) {
-            camera.cameraControl.enableTorch(newFlag)
+            camera.cameraControl.enableTorch(flashFlag)
         }
-        return newFlag
     }
 
     //Storing all needed permissions

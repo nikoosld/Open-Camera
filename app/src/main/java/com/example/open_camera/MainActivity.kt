@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var button: Button
     private var cameraManager: CameraManager? = null
     private var getCameraID: String? = null
-    private var torchStatus: Boolean = false
+    private var flashFlag: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,14 +23,7 @@ class MainActivity : AppCompatActivity() {
         buttonOff = findViewById(R.id.btnOff)
         button = findViewById(R.id.btnOpenCamera)
 
-        //Getting the back camera as the default camera
-        cameraManager = applicationContext.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        try {
-            getCameraID = cameraManager!!.cameraIdList[0]
-
-        } catch (exc: Exception) {
-            exc.printStackTrace()
-        }
+        getCamera()
 
         buttonOn.setOnClickListener {
             turnOn()
@@ -44,32 +37,43 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    //Turns the torch on
-    fun turnOn() {
-        if (!torchStatus) {
-            try {
-                cameraManager!!.setTorchMode(getCameraID!!, true)
-                torchStatus = true
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+    //Turns the flash light on
+    private fun turnOn() {
+        if (!flashFlag) {
+            toggle()
         }
     }
 
-    //Turns the torch off
-    fun turnOff() {
-        if (torchStatus) {
-            try {
-                cameraManager!!.setTorchMode(getCameraID!!, false)
-                torchStatus = false
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+    //Turns the flash light off
+    private fun turnOff() {
+        if (flashFlag) {
+            toggle()
         }
     }
 
-    //Creats new activity for displaying the camera preview
-    fun creatActivity(){
+    //Toggles the flash light
+    private fun toggle() {
+        try {
+            flashFlag = !flashFlag
+            cameraManager!!.setTorchMode(getCameraID!!, flashFlag)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    //Getting the back camera as the default camera
+    private fun getCamera() {
+        cameraManager = applicationContext.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        try {
+            getCameraID = cameraManager!!.cameraIdList[0]
+
+        } catch (exc: Exception) {
+            exc.printStackTrace()
+        }
+    }
+
+    //Creates new activity for displaying the camera preview
+    fun creatActivity() {
         val intent = Intent(this, MainActivity2::class.java)
         startActivity(intent)
     }
