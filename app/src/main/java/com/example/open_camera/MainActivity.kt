@@ -11,11 +11,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonOn: Button
     private lateinit var buttonOff: Button
     private lateinit var button: Button
-    private var cameraManager: CameraManager? = null
-    private var getCameraID: String? = null
+    var cameraManager: CameraManager? = null
+    var getCameraID: String? = null
 
     // Flag to track flashlight status
-    private var flashFlag: Boolean = false
+    var flashFlag: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //Toggle the flash light
-    private fun toggle() {
+    fun toggle() {
         try {
             flashFlag = !flashFlag
             cameraManager!!.setTorchMode(getCameraID!!, flashFlag)
