@@ -13,7 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 
-class MainActivity2 : AppCompatActivity() {
+class CameraScreen : AppCompatActivity() {
     private lateinit var previewView: PreviewView
     private lateinit var buttonOn: Button
 

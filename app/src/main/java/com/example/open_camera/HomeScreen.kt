@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity() {
+class HomeScreen : AppCompatActivity() {
     private lateinit var buttonOn: Button
     private lateinit var buttonOff: Button
     private lateinit var button: Button
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupListeners() {
         buttonOn.setOnClickListener { turnOn() }
         buttonOff.setOnClickListener { turnOff() }
-        button.setOnClickListener { createCameraPreviewActivity() }
+        button.setOnClickListener { startCameraScreenActivity() }
     }
 
     //Turn the flash light on
@@ -73,8 +73,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     //Create new activity for displaying the camera preview
-    private fun createCameraPreviewActivity() {
-        val intent = Intent(this, MainActivity2::class.java)
+    private fun startCameraScreenActivity() {
+        val intent = Intent(this, CameraScreen::class.java)
         startActivity(intent)
     }
 
